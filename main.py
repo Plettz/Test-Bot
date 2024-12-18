@@ -28,4 +28,19 @@ async def on_member_remove(member):
     channel = client.get_channel(1318764929066467368)
     await channel.send("Goodbye")
 
+@client.command(pass_context = True)
+async def join(ctx):
+    if (ctx.author.voice):
+        channel = ctx.author.voice.channel
+        await channel.connect()
+    else:
+        await ctx.send("You are not in a channel, please join a voice channel and try again")
+
+@client.command(pass_context = True)
+async def leave(ctx):
+    if (ctx.voice_client):
+        await ctx.guild.voice_client.disconnect()
+    else:
+        await ctx.send("I am not in a voice channel")
+
 client.run(TOKEN)
