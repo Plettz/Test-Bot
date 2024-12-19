@@ -1,9 +1,10 @@
 import discord
 from discord.ext import commands
+from discord import FFmpegPCMAudio
 
 file = open("key.txt", 'r')
 TOKEN = file.read()
-print(TOKEN)
+# print(TOKEN)
 
 client = commands.Bot(command_prefix='?', intents=discord.Intents.all())
 
@@ -35,6 +36,15 @@ async def join(ctx):
         await channel.connect()
     else:
         await ctx.send("You are not in a channel, please join a voice channel and try again")
+
+@client.command()
+async def knock(ctx):
+    if (ctx.voice_client):
+        voice = ctx.voice_client
+        source = FFmpegPCMAudio("knocking-on-door.mp3")
+        player = voice.play(source)
+    else:
+        await ctx.send("Could not play sound, need to be in a voice channel")
 
 @client.command(pass_context = True)
 async def leave(ctx):
